@@ -8,7 +8,23 @@ function getCharacter() {
     fetch(`http://localhost:3000/characters/${characterName}`)
         .then(response => response.json())
         .then(data => {
-            const results = data.results;
+            if(data){
+                characterInfo.innerHTML =""
+                const {name, status, species, gender, originName, image}=data
+                characterInfo.innerHTML =`
+                <figure>
+                <img src="${image}" alt="${name}">
+                <figcaption>
+                <h2>${name}</h2>
+                <p>Status: ${status}</p>
+                <p>Species: ${species}</p>
+                <p>Gender :${gender}</p>
+                </figcaption>
+                </figure>`
+            }else{
+                characterInfo.innerHTML="No character found with that name."
+            }
+            /*const results = data.results;
             
             if (results.length > 0) {
                 
@@ -23,11 +39,12 @@ function getCharacter() {
                     </li>
                 `).join('');
 
-                // Mostrar la lista de personajes
+                
                 characterInfo.innerHTML = `<ul>${charactersList}</ul>`;
             } else {
                 characterInfo.innerHTML = `<p>No se encontraron personajes con ese nombre.</p>`;
-            }
+            }*/
+
         })
         .catch(error => characterInfo.innerHTML = `<p>Imposible acceder al personaje</p>`);
 }
